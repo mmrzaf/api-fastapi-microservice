@@ -1,3 +1,5 @@
+from typing import Any
+
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,7 +43,7 @@ app.include_router(router, prefix=settings.api_prefix)
 
 
 @app.get('/')
-async def root():
+async def root() -> dict[str, Any]:
 	"""Root endpoint with comprehensive service information."""
 	return {
 		'service': settings.app_name,
