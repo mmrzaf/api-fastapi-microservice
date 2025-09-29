@@ -4,14 +4,14 @@ A production-ready FastAPI microservice template that is stateless, config-drive
 
 ## Features
 
-- ** FastAPI** - Modern, fast web framework for building APIs
-- ** Configuration Management** - Environment-based configuration with Pydantic Settings
-- ** Monitoring & Metrics** - Built-in Prometheus metrics and health checks
-- ** Structured Logging** - JSON logging with correlation IDs
-- ** Resource Management** - Proper startup/shutdown lifecycle management
-- ** Docker Ready** - Multi-stage Docker builds with security best practices
-- ** Testing** - Comprehensive test suite with pytest
-- ** Code Quality** - Black, Ruff, and MyPy for code quality and type checking
+- **FastAPI** - Modern, fast web framework for building APIs
+- **Configuration Management** - Environment-based configuration with Pydantic Settings
+- **Monitoring & Metrics** - Built-in Prometheus metrics and health checks
+- **Structured Logging** - JSON logging with correlation IDs
+- **Resource Management** - Proper startup/shutdown lifecycle management
+- **Docker Ready** - Multi-stage Docker builds with security best practices
+- **Testing** - Comprehensive test suite with pytest
+- **Code Quality** - Black, Ruff, and MyPy for code quality and type checking
 
 ## Quick Start
 
@@ -27,7 +27,7 @@ A production-ready FastAPI microservice template that is stateless, config-drive
    ```bash
    git clone https://github.com/Mohammadreza-Farkhondeh/api-fastapi-microservice
    cd api-fastapi-microservice
-````
+   ```
 
 2.  **Install dependencies:**
 
@@ -47,17 +47,17 @@ A production-ready FastAPI microservice template that is stateless, config-drive
 4.  **Run the application:**
 
     ```bash
-    poetry run uvicorn src.app.main:app --reload
+    poetry run uvicorn app.main:app --reload
     # or
-    python -m uvicorn src.app.main:app --reload
+    python -m uvicorn app.main:app --reload
     ```
 
 5.  **Access the application:**
 
       - API: http://localhost:8000
       - Docs: http://localhost:8000/docs
-      - Health: http://localhost:8000/api/v1/health
-      - Metrics: http://localhost:8000/api/v1/metrics
+      - Health: http://localhost:8000/api/health
+      - Metrics: http://localhost:8000/api/metrics
 
 ### Docker
 
@@ -73,8 +73,10 @@ docker run -p 8000:8000 api-fastapi-microservice
 
 ```
 api-fastapi-microservice/
-├── src/app/
-│   ├── api/v1/        # API endpoints
+├── app/
+│   ├── api/           # API layer
+│   │   ├── v1/        # API v1 endpoints
+│   │   └── health.py  # Health & metrics endpoints
 │   ├── core/          # Core functionality
 │   └── main.py        # Application entry point
 ├── tests/             # Test suite
@@ -119,13 +121,13 @@ poetry run pytest tests/unit/test_health.py -v
 
 ### Health Checks
 
-  - **Endpoint**: `GET /api/v1/health`
+  - **Endpoint**: `GET /api/health`
   - **Purpose**: Service health status and system metrics
   - **Configuration**: Set `HEALTH_CHECK_DETAILS=true` for detailed system info
 
 ### Metrics
 
-  - **Endpoint**: `GET /api/v1/metrics`
+  - **Endpoint**: `GET /api/metrics`
   - **Format**: Prometheus text format
   - **Metrics**:
       - HTTP request counter
@@ -168,8 +170,8 @@ PORT=8000
 
 ### Adding New Endpoints
 
-1.  Create endpoint in `src/app/api/v1/endpoints/`
-2.  Add router to `src/app/api/v1/router.py`
+1.  Create endpoint in `app/api/v1/endpoints/`
+2.  Add router to `app/api/v1/router.py`
 3.  Add tests in `tests/`
 
 ### Adding Dependencies
@@ -181,13 +183,13 @@ poetry add --group dev <dev-package-name>
 
 ### Custom Middleware
 
-Add middleware in `src/app/main.py`:
+Add middleware in `app/main.py`:
 
 ```python
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 app.add_middleware(
-    TrustedHostMiddleware, 
+    TrustedHostMiddleware,
     allowed_hosts=settings.allowed_hosts
 )
 ```
