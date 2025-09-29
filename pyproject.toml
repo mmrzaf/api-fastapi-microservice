@@ -29,6 +29,7 @@ pytest-asyncio = "^1.2.0"
 httpx = "^0.28.1"
 ruff = "^0.13.1"
 mypy = "^1.18.2"
+types-psutil = "^7.0.0.20250822"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
