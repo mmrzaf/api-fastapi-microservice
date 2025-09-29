@@ -8,11 +8,11 @@ def test_full_application_flow(client: TestClient):
 	assert root_response.status_code == 200
 
 	# Test health check
-	health_response = client.get('/api/v1/health')
+	health_response = client.get('/api/health/')
 	assert health_response.status_code == 200
 
 	# Test metrics
-	metrics_response = client.get('/api/v1/metrics')
+	metrics_response = client.get('/api/metrics/')
 	assert metrics_response.status_code == 200
 
 	# Test OpenAPI docs accessibility

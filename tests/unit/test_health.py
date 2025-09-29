@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 def test_health_endpoint(client: TestClient):
 	"""Test health check endpoint."""
-	response = client.get('/api/v1/health')
+	response = client.get('/api/health/')
 
 	assert response.status_code == 200
 	data = response.json()
@@ -16,7 +16,7 @@ def test_health_endpoint(client: TestClient):
 
 def test_metrics_endpoint(client: TestClient):
 	"""Test metrics endpoint."""
-	response = client.get('/api/v1/metrics')
+	response = client.get('/api/metrics/')
 
 	assert response.status_code == 200
 	assert 'text/plain' in response.headers['content-type']
