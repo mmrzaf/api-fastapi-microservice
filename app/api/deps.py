@@ -7,6 +7,6 @@ def get_current_settings() -> Settings:
 	return get_settings()
 
 
-def get_resource_manager():
+def get_resource_manager() -> object:
 	"""Dependency to get resource manager."""
 	return resource_manager

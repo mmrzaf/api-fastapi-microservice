@@ -1,6 +1,6 @@
 import asyncio
-from contextlib import asynccontextmanager
-from typing import AsyncGenerator
+from contextlib import asynccontextmanager, suppress
+from typing import Any, AsyncGenerator
 
 import structlog
 from fastapi import FastAPI
@@ -12,8 +12,8 @@ class ResourceManager:
 	"""Manages application resources with proper cleanup."""
 
 	def __init__(self) -> None:
-		self._resources: dict[str, any] = {}
-		self._cleanup_tasks: list[asyncio.Task] = []
+		self._resources: dict[str, Any] = {}
+		self._cleanup_tasks: list[asyncio.Task[Any]] = []
 
 	async def startup(self) -> None:
 		"""Initialize resources on startup."""
@@ -32,10 +32,8 @@ class ResourceManager:
 		for task in self._cleanup_tasks:
 			if not task.done():
 				task.cancel()
-				try:
+				with suppress(asyncio.CancelledError):
 					await task
-				except asyncio.CancelledError:
-					pass
 
 		# Close resources
 		for name, resource in self._resources.items():
@@ -51,7 +49,7 @@ class ResourceManager:
 		self._resources.clear()
 		logger.info('Resource cleanup complete')
 
-	def get_resource(self, name: str) -> any:
+	def get_resource(self, name: str) -> Any:
 		"""Get a managed resource."""
 		return self._resources.get(name)
 
@@ -61,7 +59,7 @@ resource_manager = ResourceManager()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
 	"""Application lifespan manager."""
 	# Startup
 	await resource_manager.startup()

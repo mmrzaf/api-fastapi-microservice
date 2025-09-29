@@ -9,7 +9,7 @@ from app.core.config import get_settings
 
 
 def add_request_context(
-	logger: Any, method_name: str, event_dict: Dict[str, Any]
+	_logger: Any, _method_name: str, event_dict: Dict[str, Any]
 ) -> Dict[str, Any]:
 	"""Add request context to log entries if available."""
 	return event_dict
