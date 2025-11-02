@@ -103,7 +103,7 @@ async def metrics_middleware(request: Request, call_next):
 		metrics.record_request(
 			method=request.method,
 			endpoint=request.url.path,
-			status_code=response.status_code,
+			status_code=request.scope['route'].path_format,
 			duration=duration,
 		)
 
@@ -113,11 +113,16 @@ async def metrics_middleware(request: Request, call_next):
 		duration = time.time() - start_time
 
 		metrics.record_request(
-			method=request.method, endpoint=request.url.path, status_code=500, duration=duration
+			method=request.method,
+			endpoint=request.scope['route'].path_format,
+			status_code=500,
+			duration=duration,
 		)
 
 		metrics.record_error(
-			error_type=e.__class__.__name__, endpoint=request.url.path, status_code=500
+			error_type=e.__class__.__name__,
+			endpoint=request.scope['route'].path_format,
+			status_code=500,
 		)
 
 		raise

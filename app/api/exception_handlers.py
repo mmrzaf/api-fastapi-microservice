@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 from fastapi import Request, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -209,10 +210,17 @@ async def not_found_handler(request: Request, exc: NotFoundError) -> JSONRespons
 	return await base_app_exception_handler(request, exc)
 
 
+async def request_validation_handler(request, exc: RequestValidationError):
+	details = {'validation_errors': exc.errors()}
+	wrapped = ValidationError(details=details)  # your app error
+	return await base_app_exception_handler(request, wrapped)
+
+
 exception_handlers = {
 	BaseAppException: base_app_exception_handler,
 	StarletteHTTPException: http_exception_handler,
 	ValidationError: validation_error_handler,
 	NotFoundError: not_found_handler,
 	Exception: global_exception_handler,
+	RequestValidationError: request_validation_handler,
 }

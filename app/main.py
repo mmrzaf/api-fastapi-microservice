@@ -9,7 +9,7 @@ from app.api import router
 from app.api.exception_handlers import exception_handlers
 from app.core.config import get_settings
 from app.core.lifecycle import lifespan
-from app.core.logging import setup_logging
+from app.core.logging import RequestContextMiddleware, setup_logging
 from app.core.metrics import init_metrics, metrics_middleware
 from app.core.middlewares.request_context import RequestContextMiddleware
 
@@ -42,7 +42,6 @@ if settings.cors_origins:
         allow_headers=settings.cors_headers,
     )
 
-app.mount("/hls", StaticFiles(directory=settings.hls_root), name="hls")
 app.include_router(router, prefix=settings.api_prefix)
 
 
