@@ -50,7 +50,7 @@ async def health_check(
 				'platform': platform.system(),
 				'python_version': platform.python_version(),
 				'cpu_count': psutil.cpu_count(),
-				'cpu_percent': psutil.cpu_percent(interval=1),
+				'cpu_percent': psutil.cpu_percent(interval=None),
 				'memory': {
 					'total_gb': round(memory.total / (1024**3), 2),
 					'available_gb': round(memory.available / (1024**3), 2),
