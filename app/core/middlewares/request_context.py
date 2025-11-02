@@ -3,6 +3,7 @@ import uuid
 from starlette.middleware.base import BaseHTTPMiddleware
 from structlog import contextvars as ctx
 
+
 class RequestContextMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         ctx.clear_contextvars()

@@ -6,6 +6,6 @@ from app.main import app
 
 @pytest.fixture
 def client():
-	"""Test client fixture."""
-	with TestClient(app) as test_client:
-		yield test_client
+    """Test client fixture."""
+    with TestClient(app) as test_client:
+        yield test_client

@@ -7,9 +7,9 @@ from .v1 import router as v1_router
 
 router = APIRouter()
 
-router.include_router(health_router, prefix='/health', tags=['Health & Monitoring'])
+router.include_router(health_router, prefix="/health", tags=["Health & Monitoring"])
 
-router.include_router(metrics_router, prefix='/metrics', tags=['Metrics & Stats'])
-router.include_router(v1_router, prefix='/v1')
+router.include_router(metrics_router, prefix="/metrics", tags=["Metrics & Stats"])
+router.include_router(v1_router, prefix="/v1")
 
-__all__ = ['router', 'exception_handlers']
+__all__ = ["router", "exception_handlers"]

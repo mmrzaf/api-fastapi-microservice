@@ -3,4 +3,4 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-__all__ = ['router']
+__all__ = ["router"]
