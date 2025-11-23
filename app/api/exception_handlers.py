@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
@@ -30,9 +30,9 @@ class ErrorResponseBuilder:
         message: str,
         code: str,
         error_type: str,
-        details: Optional[Dict[str, Any]] = None,
+        details: dict[str, Any] | None = None,
         status_code: int = 400,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Build standardized error response."""
         request_id = getattr(request.state, "request_id", "unknown")
 
@@ -51,7 +51,7 @@ class ErrorResponseBuilder:
         }
 
     @staticmethod
-    def get_response_headers(exc: Exception) -> Dict[str, str]:
+    def get_response_headers(exc: Exception) -> dict[str, str]:
         """Get appropriate response headers for exception type."""
         headers = {}
 

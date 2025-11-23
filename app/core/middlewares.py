@@ -2,6 +2,7 @@ import uuid
 
 import structlog
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
@@ -28,6 +29,7 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
 
 def install_middleware(app: FastAPI):
     app.add_middleware(GZipMiddleware, minimum_size=1024)
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=get_settings().allowed_hosts)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=get_settings().cors_origins,

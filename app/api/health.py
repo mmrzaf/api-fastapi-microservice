@@ -1,6 +1,6 @@
 import platform
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime
+from typing import Any
 
 import psutil
 from fastapi import APIRouter, Depends
@@ -18,7 +18,7 @@ class HealthResponse(BaseModel):
     status: str
     timestamp: datetime
     version: str
-    details: Dict[str, Any] | None = None
+    details: dict[str, Any] | None = None
 
 
 @router.get("/", response_model=HealthResponse)
@@ -32,7 +32,7 @@ async def health_check(
     """
     response = HealthResponse(
         status="healthy",
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.now(UTC),
         version=settings.app_version,
     )
 

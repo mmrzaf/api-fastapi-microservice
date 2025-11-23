@@ -1,7 +1,7 @@
 import logging
 import logging.config
 import re
-from typing import Any, Dict, List
+from typing import Any
 
 import structlog
 from structlog.types import Processor
@@ -12,14 +12,14 @@ _REQ_LINE_RE = re.compile(r"(?P<method>[A-Z]+)\s+(?P<path>\S+)\s+(?P<protocol>HT
 
 
 def add_request_context(
-    _logger: Any, _method_name: str, event_dict: Dict[str, Any]
-) -> Dict[str, Any]:
+    _logger: Any, _method_name: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
     return event_dict
 
 
 def uvicorn_access_to_structured(
-    _logger: Any, _method_name: str, event_dict: Dict[str, Any]
-) -> Dict[str, Any]:
+    _logger: Any, _method_name: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
     record = event_dict.get("_record")
     if not record or record.name != "uvicorn.access":
         return event_dict
@@ -52,8 +52,8 @@ def uvicorn_access_to_structured(
 
 
 def rename_event_to_message(
-    _logger: Any, _method_name: str, event_dict: Dict[str, Any]
-) -> Dict[str, Any]:
+    _logger: Any, _method_name: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
     if "event" in event_dict and "message" not in event_dict:
         event_dict["message"] = event_dict.pop("event")
     return event_dict
@@ -63,7 +63,7 @@ def setup_logging() -> None:
     settings = get_settings()
     level = getattr(logging, settings.log_level, logging.INFO)
 
-    pre_chain: List[Processor] = [
+    pre_chain: list[Processor] = [
         structlog.contextvars.merge_contextvars,
         uvicorn_access_to_structured,
         add_request_context,
@@ -73,7 +73,7 @@ def setup_logging() -> None:
     ]
 
     if settings.log_format == "json":
-        tails: List[Processor] = [
+        tails: list[Processor] = [
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
             rename_event_to_message,

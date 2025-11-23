@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class BaseAppException(Exception):
@@ -10,9 +10,9 @@ class BaseAppException(Exception):
     def __init__(
         self,
         message: str,
-        code: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        code: str | None = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         super().__init__(message)
         self.message = message
@@ -26,7 +26,7 @@ class BaseAppException(Exception):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(message='{self.message}', code='{self.code}')"
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert exception to dictionary for serialization."""
         return {
             "type": self.__class__.__name__,
@@ -43,8 +43,8 @@ class AuthenticationError(BaseAppException):
         self,
         message: str = "Authentication failed",
         code: str = "AUTH_FAILED",
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         super().__init__(message, code, details, cause)
 
@@ -56,8 +56,8 @@ class AuthorizationError(BaseAppException):
         self,
         message: str = "Access denied",
         code: str = "ACCESS_DENIED",
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         super().__init__(message, code, details, cause)
 
@@ -69,9 +69,9 @@ class ValidationError(BaseAppException):
         self,
         message: str = "Validation failed",
         code: str = "VALIDATION_ERROR",
-        details: Optional[Dict[str, Any]] = None,
-        errors: Optional[List[Dict[str, Any]]] = None,
-        cause: Optional[Exception] = None,
+        details: dict[str, Any] | None = None,
+        errors: list[dict[str, Any]] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         super().__init__(message, code, details, cause)
         self.errors = errors or []
@@ -86,10 +86,10 @@ class NotFoundError(BaseAppException):
         self,
         message: str = "Resource not found",
         code: str = "NOT_FOUND",
-        resource_type: Optional[str] = None,
-        resource_id: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        resource_type: str | None = None,
+        resource_id: str | None = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         if not details and (resource_type or resource_id):
             details = {}
@@ -108,8 +108,8 @@ class ConflictError(BaseAppException):
         self,
         message: str = "Resource conflict",
         code: str = "CONFLICT",
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         super().__init__(message, code, details, cause)
 
@@ -122,8 +122,8 @@ class RateLimitError(BaseAppException):
         message: str = "Rate limit exceeded",
         code: str = "RATE_LIMIT_EXCEEDED",
         retry_after: int = 60,
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         if not details:
             details = {"retry_after": retry_after}
@@ -137,9 +137,9 @@ class ServiceUnavailableError(BaseAppException):
         self,
         message: str = "Service temporarily unavailable",
         code: str = "SERVICE_UNAVAILABLE",
-        service_name: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None,
-        cause: Optional[Exception] = None,
+        service_name: str | None = None,
+        details: dict[str, Any] | None = None,
+        cause: Exception | None = None,
     ) -> None:
         if not details and service_name:
             details = {"service": service_name}

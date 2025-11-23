@@ -1,6 +1,7 @@
 import asyncio
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager, suppress
-from typing import Any, AsyncGenerator
+from typing import Any
 
 import structlog
 from fastapi import FastAPI

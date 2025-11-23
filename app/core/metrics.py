@@ -1,5 +1,4 @@
 import time
-from typing import Optional
 
 import structlog
 from fastapi import Request
@@ -52,9 +51,7 @@ class MetricsCollector:
 
         REQUEST_DURATION.labels(method=method, endpoint=endpoint).observe(duration)
 
-    def record_error(
-        self, error_type: str, endpoint: str, status_code: Optional[int] = None
-    ) -> None:
+    def record_error(self, error_type: str, endpoint: str, status_code: int | None = None) -> None:
         """Record application error metrics."""
         ERROR_COUNT.labels(
             error_type=error_type,

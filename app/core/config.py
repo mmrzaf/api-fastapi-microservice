@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import List, Literal
+from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -31,13 +31,13 @@ class Settings(BaseSettings):
 
     # API
     api_prefix: str = "/api"
-    allowed_hosts: List[str] = Field(default_factory=lambda: ["*"])
+    allowed_hosts: list[str] = Field(default_factory=lambda: ["localhost", "127.0.0.1"])
     request_max_bytes: int = 1_000_000  # 1MB
     # CORS
-    cors_origins: List[str] = Field(default_factory=list)
+    cors_origins: list[str] = Field(default_factory=list)
     cors_credentials: bool = False
-    cors_methods: List[str] = Field(default_factory=lambda: ["GET", "POST", "PUT", "DELETE"])
-    cors_headers: List[str] = Field(default_factory=list)
+    cors_methods: list[str] = Field(default_factory=lambda: ["GET", "POST", "PUT", "DELETE"])
+    cors_headers: list[str] = Field(default_factory=list)
 
     # Health check
     health_check_details: bool = True
